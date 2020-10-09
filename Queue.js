@@ -11,7 +11,7 @@ class Queue {
     this.tail = null;
     this.size = 0;
   }
-  queue(val) {
+  enqueue(val) {
     // A->B->C->D
     const newNode = new Node(val);
     if (this.size === 0) {
@@ -22,7 +22,7 @@ class Queue {
       this.tail = newNode;
     }
     this.size++;
-    return this;
+    return this.size;
   }
   dequeue() {
     // A->B->C
@@ -37,11 +37,11 @@ class Queue {
       this.head = this.head.next;
     }
     this.size--;
-    return removed;
+    return removed.val;
   }
 }
 
 const newQueue = new Queue();
-console.log(newQueue.queue('A'));
-console.log(newQueue.queue('B'));
-console.log(newQueue.queue('C'));
+console.log(newQueue.enqueue('A'));
+console.log(newQueue.enqueue('B'));
+console.log(newQueue.enqueue('C'));
