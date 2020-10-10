@@ -38,8 +38,9 @@ class BinarySearchTree {
     }
   }
   find(val) {
+    if (this.root === null) return false;
     let current = this.root;
-    while (true) {
+    while (current) {
       if (current === null || current === undefined) return false;
       if (current.val === val) return current;
       if (val > current.val) {
