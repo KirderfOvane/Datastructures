@@ -60,15 +60,29 @@ class BinarySearchTree {
     //              17
     let node = this.root;
     const queue = [];
-    const data = [];
+    const visited = [];
     queue.push(node);
     while (queue.length) {
       node = queue.shift();
-      data.push(node.val);
+      visited.push(node.val);
       if (node.left) queue.push(node.left);
       if (node.right) queue.push(node.right);
     }
-    return data;
+    return visited;
+  }
+  DFS_preOrder() {
+    // 10,7,5,110,13,11,16,17
+    const visited = [];
+    let node = this.root;
+    function traverse(node) {
+      //action
+      visited.push(node.val);
+      //recursion variation
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+    }
+    traverse(node);
+    return visited;
   }
 }
 
@@ -81,6 +95,6 @@ BST.insert(13);
 BST.insert(16);
 BST.insert(11);
 BST.insert(17);
-const test = BST.BFS();
+const test = BST.DFS_preOrder();
 //const test = BST.find(16);
 console.log(test);
