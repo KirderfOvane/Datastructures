@@ -52,17 +52,35 @@ class BinarySearchTree {
       }
     }
   }
+  BFS() {
+    //       10
+    //    7     110
+    //  5      13
+    //       11   16
+    //              17
+    let node = this.root;
+    const queue = [];
+    const data = [];
+    queue.push(node);
+    while (queue.length) {
+      node = queue.shift();
+      data.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    return data;
+  }
 }
 
 const BST = new BinarySearchTree();
 BST.insert(10);
 BST.insert(7);
-BST.insert(1101);
+BST.insert(110);
 BST.insert(5);
 BST.insert(13);
 BST.insert(16);
 BST.insert(11);
 BST.insert(17);
-
-const test = BST.find(16);
+const test = BST.BFS();
+//const test = BST.find(16);
 console.log(test);
