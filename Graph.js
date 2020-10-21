@@ -22,20 +22,80 @@ class Graph {
     }
     delete this.adjacencyList[vertex];
   }
+
+  DFiterative(vertex) {
+    const visited = {};
+    const result = [];
+    const adjacencyList = this.adjacencyList;
+    const S = [];
+    let vert;
+    S.push(vertex);
+    visited[vertex] = true;
+    while (S.length) {
+      vert = S.pop();
+      result.push(vert);
+      adjacencyList[vert].forEach((N) => {
+        if (!visited[N]) {
+          visited[N] = true;
+          S.push(N);
+        }
+      });
+    }
+    return result;
+  }
+
+  DFtraversal(vertex) {
+    const visited = {};
+    const result = [];
+    const adjacencyList = this.adjacencyList;
+    (function traverse(vertex) {
+      if (!vertex) return null;
+      visited[vertex] = true;
+      result.push(vertex);
+      adjacencyList[vertex].forEach((neighbor) => {
+        if (!visited[neighbor]) {
+          return traverse(neighbor);
+        }
+      });
+    })(vertex);
+    return result;
+  }
+  BFS(vertex) {
+    const visited = {};
+    const result = [];
+    const Queue = [vertex];
+    let vert;
+    visited[vertex] = true;
+    while (Queue.length) {
+      vert = Queue.shift();
+      result.push(vert);
+      this.adjacencyList[vert].forEach((neighbor) => {
+        if (!visited[neighbor]) {
+          visited[neighbor] = true;
+          Queue.push(neighbor);
+        }
+      });
+    }
+    return result;
+  }
 }
 const myGraph = new Graph();
-myGraph.addVertex('Tokyo');
-myGraph.addVertex('Dallas');
-myGraph.addVertex('Aspen');
-myGraph.addVertex('Los_Angeles');
-myGraph.addVertex('Hong_Kong');
+myGraph.addVertex('A');
+myGraph.addVertex('B');
+myGraph.addVertex('C');
+myGraph.addVertex('D');
+myGraph.addVertex('E');
+myGraph.addVertex('F');
 
-myGraph.addEdge('Tokyo', 'Hong_Kong');
-myGraph.addEdge('Dallas', 'Aspen');
-myGraph.addEdge('Dallas', 'Tokyo');
-myGraph.addEdge('Dallas', 'Hong_Kong');
-myGraph.addEdge('Los_Angeles', 'Hong_Kong');
-myGraph.addEdge('Los_Angeles', 'Dallas');
-
-myGraph.removeVertex('Hong_Kong');
-console.log(myGraph);
+myGraph.addEdge('A', 'B');
+myGraph.addEdge('A', 'C');
+myGraph.addEdge('B', 'D');
+myGraph.addEdge('C', 'E');
+myGraph.addEdge('D', 'E');
+myGraph.addEdge('D', 'F');
+myGraph.addEdge('E', 'F');
+// const test = myGraph.DFtraversal('A');
+// const test = myGraph.DFiterative('A');
+const test = myGraph.BFS('A');
+console.log(test);
+//console.log(myGraph);
