@@ -1,9 +1,9 @@
-class PriorityQueue {
+class NaivePriorityQueue {
   constructor() {
     this.values = [];
   }
-  enqueue(name, priority) {
-    this.values.push({ name, priority });
+  enqueue(val, priority) {
+    this.values.push({ val, priority });
     this.sort();
   }
   dequeue() {
@@ -11,6 +11,85 @@ class PriorityQueue {
   }
   sort() {
     this.values.sort((a, b) => a.priority - b.priority);
+  }
+}
+
+class Node {
+  constructor(val, priority) {
+    this.val = val;
+    this.priority = priority;
+  }
+}
+
+class PriorityQueue {
+  constructor() {
+    this.queue = [];
+  }
+
+  bubbleUp() {
+    let idx = this.queue.length - 1;
+    const node = this.queue[idx];
+
+    while (idx > 0) {
+      let parentIdx = Math.floor((idx - 1) / 2);
+      let parent = this.queue[parentIdx];
+
+      if (node.priority >= parent.priority) break;
+      this.queue[parentIdx] = node;
+      this.queue[idx] = parent;
+      idx = parentIdx;
+    }
+  }
+  enqueue(val, priority) {
+    const newNode = new Node(val, priority);
+    this.queue.push(newNode);
+    this.bubbleUp();
+
+    return this.queue;
+  }
+
+  dequeue() {
+    const min = this.queue[0];
+    const end = this.queue.pop();
+
+    if (this.queue.length > 0) {
+      this.queue[0] = end;
+      this.sinkDown();
+    }
+
+    return min;
+  }
+  sinkDown() {
+    let idx = 0;
+    const length = this.queue.length;
+    const currentNode = this.queue[0];
+
+    while (true) {
+      let leftChildIdx = 2 * idx + 1;
+      let rightChildIdx = 2 * idx + 2;
+      let leftChild, rightChild;
+      let swap = null;
+
+      if (leftChildIdx < length) {
+        leftChild = this.queue[leftChildIdx];
+        if (currentNode.priority > leftChild.priority) {
+          swap = leftChildIdx;
+        }
+      }
+
+      if (rightChildIdx < length) {
+        rightChild = this.queue[rightChildIdx];
+
+        if ((swap === null && rightChild.priority < currentNode.priority) || (swap !== null && rightChild.priority < leftChild.priority)) {
+          swap = rightChildIdx;
+        }
+      }
+      if (swap === null) break;
+
+      this.queue[idx] = this.queue[swap];
+      this.queue[swap] = currentNode;
+      idx = swap;
+    }
   }
 }
 
@@ -44,11 +123,10 @@ class WeightedGraph {
       }
       previous[v] = null;
     }
-
     // cycle begins
-    while (queue.values.length) {
-      // fetch smallest value in queue,which is the shortest edge weight left in queue. we get the name of it,not the weight
-      smallest = queue.dequeue().name;
+    while (queue.queue.length) {
+      // fetch smallest value in queue,which is the shortest edge weight left in queue. we get the val of it,not the weight
+      smallest = queue.dequeue().val;
       if (smallest === end) {
         //We are done, we have reached the end node and we know its the shortest path because fetching the smallest value from priority queue makes it so.
         //build path to return at end
@@ -98,3 +176,4 @@ WG.addEdge('D', 'F', 1);
 WG.addEdge('E', 'F', 1);
 
 const test = WG.dijkstra('A', 'E');
+console.log(test);
